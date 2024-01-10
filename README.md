@@ -1,1 +1,1 @@
-# job-findings-backend
+# job-postings-backend
