@@ -66,7 +66,7 @@ $mail = require __DIR__ . "/mailer.php";
     $mail->isHTML(true);
     $mail->Subject = " Job Postings Account Activation";
     $mail->Body = <<<END
-    Click <a href= "http://localhost/projects/job-postings-backend/activate-account.php?token=$activation_token" >  here </a>  to activate your account.
+    Click <a href= "http://localhost:3000/activate/token=$activation_token" >  here </a>  to activate your account.
  END;
 
     $mail->send();

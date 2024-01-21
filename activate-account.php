@@ -1,5 +1,13 @@
 <?php 
- $token = $_GET["token"];
+
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, X-Requested-With");
+header('Content-Type: application/json; charset=utf-8');
+
+$credentials = json_decode(file_get_contents("php://input") , true);
+
+  $token = $credentials["token"];
 
  $token_hash = hash("SHA256" , $token);
  
@@ -31,11 +39,14 @@
 
   $stmt->bind_param('s' , $user["id"]) ;
 
-   $stmt->execute() ;
+   if($stmt->execute() ) {
+     echo json_encode(["activation_success" => "true"]) ;
+   };
 
  
  
 
  
+
 
 ?>
