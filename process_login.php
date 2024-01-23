@@ -27,7 +27,7 @@ header('Content-Type: application/json; charset=utf-8');
  if($user) {
     if(password_verify($login_data["password"] , $user["password_hash"])) {
         $key = "mykey2010";
-        $payload = ["name" => $user["name"]];
+        $payload = ["name" => $user["name"] , "user_id" => $user["id"]];
         $jwt = JWT::encode($payload , $key , 'HS256');
         
         echo json_encode(["token" => $jwt]);
