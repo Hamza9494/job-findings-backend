@@ -1,52 +1,45 @@
-<?php 
+<?php
 
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, X-Requested-With");
 header('Content-Type: application/json; charset=utf-8');
 
-$credentials = json_decode(file_get_contents("php://input") , true);
+$credentials = json_decode(file_get_contents("php://input"), true);
 
-  $token = $credentials["token"];
+$token = $credentials["token"];
 
- $token_hash = hash("SHA256" , $token);
- 
- $mysqli = require __DIR__ . "/database.php";
+$token_hash = hash("SHA256", $token);
 
- $sql = "SELECT * FROM users WHERE account_activation_hash = ? " ;
+$mysqli = require __DIR__ . "/database.php";
 
- $stmt = $mysqli->prepare($sql);
+$sql = "SELECT * FROM users WHERE account_activation_hash = ? ";
 
- $stmt->bind_param('s' , $token_hash) ;
+$stmt = $mysqli->prepare($sql);
 
- $stmt->execute();
+$stmt->bind_param('s', $token_hash);
 
-
- $result = $stmt->get_result() ;
-
- $user = $result->fetch_assoc();
-
-  if(!$user) {
-    die("no unactivated account to activate");
- } ;
+$stmt->execute();
 
 
+$result = $stmt->get_result();
 
- 
- $sql = "UPDATE users SET account_activation_hash = NULL WHERE id = ? " ;
+$user = $result->fetch_assoc();
 
- $stmt = $mysqli->prepare($sql); 
-
-  $stmt->bind_param('s' , $user["id"]) ;
-
-   if($stmt->execute() ) {
-     echo json_encode(["activation_success" => "true"]) ;
-   };
-
- 
- 
-
- 
+if (!$user) {
+  die("no unactivated account to activate");
+};
 
 
-?>
+
+
+$sql = "UPDATE users SET account_activation_hash = NULL WHERE id = ? ";
+
+
+$stmt = $mysqli->prepare($sql);
+
+$stmt->bind_param('s', $user["id"]);
+
+if ($stmt->execute()) {
+  echo json_encode(["activation_success" => "true"]);
+};
