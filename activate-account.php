@@ -7,9 +7,13 @@ header('Content-Type: application/json; charset=utf-8');
 
 $credentials = json_decode(file_get_contents("php://input"), true);
 
-$token = $credentials["token"];
+$token = ($credentials[0]);
+
+
 
 $token_hash = hash("SHA256", $token);
+
+var_dump($token_hash);
 
 $mysqli = require __DIR__ . "/database.php";
 
@@ -26,6 +30,8 @@ $result = $stmt->get_result();
 
 $user = $result->fetch_assoc();
 
+
+
 if (!$user) {
   die("no unactivated account to activate");
 };
@@ -33,7 +39,7 @@ if (!$user) {
 
 
 
-$sql = "UPDATE users SET account_activation_hash = NULL WHERE id = ? ";
+$sql = "UPDATE users SET account_activation_hash = null WHERE id = ? ";
 
 
 $stmt = $mysqli->prepare($sql);
@@ -41,5 +47,5 @@ $stmt = $mysqli->prepare($sql);
 $stmt->bind_param('s', $user["id"]);
 
 if ($stmt->execute()) {
-  echo json_encode(["activation_success" => "true"]);
+  echo json_encode(["activation_success" => "true", "user_data" => $user]);
 };

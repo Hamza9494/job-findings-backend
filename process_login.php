@@ -27,7 +27,7 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
 if ($user) {
-   if (password_verify($login_data["password"], $user["password_hash"]) && $user["account_activation_hash"] == null) {
+   if (password_verify($login_data["password"], $user["password_hash"]) && $user["account_activation_hash"] ==  '') {
       $key = "mykey2010";
       $payload = ["name" => $user["name"]];
       $jwt = JWT::encode($payload, $key, 'HS256');
