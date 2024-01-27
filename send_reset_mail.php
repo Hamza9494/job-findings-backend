@@ -41,7 +41,6 @@ if ($user) {
     $stmt->execute();
 
 
-
     //recipient details
     $mail->setFrom("job_postings@email.com");
     $mail->addAddress($user_email['email']);
